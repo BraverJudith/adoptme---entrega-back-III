@@ -37,3 +37,5 @@ swaggerConfig(app);
 app.listen(PORT,()=>console.log(`Listening on ${PORT}`));
 
 app.use(errorHandler);
+
+export default app;

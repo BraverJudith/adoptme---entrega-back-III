@@ -7,14 +7,13 @@
   "scripts": {
     "start": "node src/app.js",
     "dev": "nodemon src/app.js",
-    "test": "mocha test/supertest.test.js"
+    "test": "mocha src/test/adoption.test.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@faker-js/faker": "^9.3.0",
-    "bcrypt": "^5.1.0",
+    "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.4.7",
     "express": "^4.18.2",
@@ -29,9 +28,11 @@
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
+    "@faker-js/faker": "^9.4.0",
     "chai": "^4.5.0",
     "chai-http": "^5.1.1",
-    "mocha": "^10.1.0",
+    "mocha": "^10.8.2",
+    "nodemon": "^3.1.9",
     "supertest": "^7.0.0"
   }
 }
