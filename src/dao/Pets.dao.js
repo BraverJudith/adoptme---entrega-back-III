@@ -10,6 +10,10 @@ export default class Pet {
         return petModel.findOne(params);
     }
 
+    getById = (id) => {
+        return petModel.findById(id);
+    }
+
     save = (doc) =>{
         return petModel.create(doc);
     }
