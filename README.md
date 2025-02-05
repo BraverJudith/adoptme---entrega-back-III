@@ -48,12 +48,19 @@ Antes de comenzar con la instalación, asegúrate de tener instalados los siguie
 
 ## Pruebas Incluidas
 
-El proyecto incluye pruebas para verificar la funcionalidad de los endpoints. Estas pruebas están ubicadas en el archivo `router/adoption.router.js` y cubren lo siguiente:
+El proyecto incluye pruebas para verificar la funcionalidad de los endpoints de adopciones y usuarios. Las pruebas están ubicadas en los archivos correspondientes y cubren lo siguiente:
 
-- `GET /api/adoptions`: Devuelve todas las adopciones.
-- `GET /api/adoptions/{aid}`: Devuelve una adopción específica.
-- `POST /api/adoptions/{uid}/{pid}`: Crea una adopción.
+### Endpoints de Adopciones (`router/adoption.router.js`):
+- **`GET /api/adoptions`**: Devuelve todas las adopciones registradas.
+- **`GET /api/adoptions/{aid}`**: Devuelve una adopción específica, identificada por su ID.
+- **`POST /api/adoptions/{uid}/{pid}`**: Crea una nueva adopción asociando un usuario y una mascota.
 
+### Endpoints de Usuarios (`router/users.router.js`):
+- **`GET /api/users`**: Devuelve todos los usuarios registrados.
+- **`POST /api/users`**: Crea un nuevo usuario con la información proporcionada.
+- **`GET /api/users/{uid}`**: Devuelve un usuario específico por su ID.
+- **`PUT /api/users/{uid}`**: Actualiza los datos de un usuario específico identificado por su ID.
+- **`DELETE /api/users/{uid}`**: Elimina un usuario específico identificado por su ID.
 ---
 
 ## Documentación de APIs
