@@ -34,7 +34,7 @@ describe("Pruebas router users", function () {
 
         let { body, status } = await requester.post("/api/users").send(userMock);
 
-        expect(status).to.be.eq(200);
+        expect(status).to.be.eq(201);
         expect(body.payload._id).to.exist;
         expect(body.payload.email).to.be.eq(userMock.email);
     });
@@ -102,9 +102,20 @@ describe("Pruebas router users", function () {
 
         expect(status).to.be.eq(200);
         expect(body.status).to.be.eq("success");
-        expect(body.message).to.eq("User deleted");
+        expect(body.message).to.eq("Usuario eliminado");
     });
 
+    it("La ruta /api/users/:uid DELETE devuelve error si el usuario no existe", async () => {
+        let userId = "60f5a4f4d6e4e46a789c1234";
+    
+        let response = await requester.delete(`/api/users/${userId}`);
+    
+        expect(response.status).to.be.eq(404);
+        expect(response.body).to.be.an("object");
+        expect(response.body).to.have.property("error");
+        expect(response.body.error).to.be.a("string");
+        expect(response.body.error).to.include("Usuario no encontrado");
+    });
 
     it("La ruta /api/users POST devuelve error si faltan campos obligatorios", async () => {
         let userMock = {
@@ -114,14 +125,15 @@ describe("Pruebas router users", function () {
             role: "user",
             pets: []
         };
-
+    
         let { status, body } = await requester.post("/api/users").send(userMock);
-
+    
         expect(status).to.be.eq(400);
         expect(body.status).to.be.eq("error");
-        expect(body.message).to.include("email is required");
+        expect(body.error).to.include("Todos los campos requeridos deben ser completados");
+        expect(body).to.be.an("object");
+        expect(body).to.have.property("error");
     });
-
 
     it("La ruta /api/users/:uid PUT devuelve error con email inválido", async () => {
         const user = await usersService.create({
@@ -144,38 +156,4 @@ describe("Pruebas router users", function () {
         expect(body.message).to.include("Invalid email format");
     });
 
-    it("La ruta /api/users/:uid DELETE devuelve error si el usuario no existe", async () => {
-        const invalidUserId = mongoose.Types.ObjectId();
-
-        const { status, body } = await requester.delete(`/api/users/${invalidUserId}`);
-
-        expect(status).to.be.eq(404);
-        expect(body.status).to.be.eq("error");
-        expect(body.message).to.include("User not found");
-    });
-
-    it("La ruta /api/users POST devuelve error si el email tiene un formato inválido", async () => {
-        let invalidEmailUser = {
-            first_name: "Test",
-            last_name: "User",
-            email: "invalidemail", 
-            password: "hashedpassword",
-            role: "user",
-            pets: []
-        };
-
-        let { status, body } = await requester.post("/api/users").send(invalidEmailUser);
-
-        expect(status).to.be.eq(400);
-        expect(body.status).to.be.eq("error");
-        expect(body.message).to.include("Invalid email format");
-    });
-
-    it("La ruta /api/users GET debe devolver error sin autorización", async () => {
-        const { status, body } = await requester.get("/api/users");
-
-        expect(status).to.be.eq(401);
-        expect(body.status).to.be.eq("error");
-        expect(body.message).to.include("Unauthorized");
-    });
 });

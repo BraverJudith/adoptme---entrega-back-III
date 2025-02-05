@@ -28,14 +28,19 @@ const getUser = async (req, res) => {
 const updateUser = async (req, res) => {
     try {
         const userId = req.params.uid;
-        const updateBody = req.body;
-        const user = await usersService.getUserById(userId);
+        const { first_name, last_name, email } = req.body;
 
+        if (email && !/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/.test(email)) {
+            return res.status(400).json({ status: "error", message: "Invalid email format" });
+        }
+
+        const user = await usersService.getUserById(userId);
         if (!user) {
             return res.status(404).send({ status: "error", error: "Usuario no encontrado" });
         }
 
-        const updatedUser = await usersService.update(userId, updateBody);
+        const updatedUser = await usersService.update(userId, { first_name, last_name, email });
+
         res.status(200).send({ status: "success", message: "Usuario actualizado", payload: updatedUser });
     } catch (error) {
         console.error("Error actualizando el usuario:", error);
@@ -46,8 +51,12 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
     try {
         const userId = req.params.uid;
-        const user = await usersService.getUserById(userId);
+        
+        if (!userId) {
+            return res.status(400).send({ status: "error", error: "ID de usuario inválido" });
+        }
 
+        const user = await usersService.getUserById(userId);
         if (!user) {
             return res.status(404).send({ status: "error", error: "Usuario no encontrado" });
         }
